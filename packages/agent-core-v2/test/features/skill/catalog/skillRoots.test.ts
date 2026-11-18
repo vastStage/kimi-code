@@ -158,5 +158,17 @@ describe('skillRoots', () => {
       expect(paths).toContain(await realpath(absDir));
       expect(paths).toContain(await realpath(join(root, 'relative')));
     });
+
+    it('resolves a Windows-style ~\\ path', async () => {
+      await markGitRoot();
+      const homeDir = join(root, 'home');
+      await mkdir(join(homeDir, 'notes'), { recursive: true });
+
+      const roots = await configuredRoots(['~\\notes'], root, homeDir, 'extra');
+
+      expect(roots.map((root) => root.path)).toContain(
+        (await realpath(join(homeDir, 'notes'))).replaceAll('\\', '/'),
+      );
+    });
   });
 });
