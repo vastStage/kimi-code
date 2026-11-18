@@ -161,7 +161,7 @@ async function pushExistingRoot(
 
 function resolveConfiguredDir(dir: string, projectRoot: string, osHomeDir: string): string {
   if (dir === '~') return osHomeDir;
-  if (dir.startsWith('~/')) return path.join(osHomeDir, dir.slice(2));
+  if (dir.startsWith('~/') || dir.startsWith('~\\')) return path.join(osHomeDir, dir.slice(2));
   if (path.isAbsolute(dir)) return dir;
   return path.resolve(projectRoot, dir);
 }
